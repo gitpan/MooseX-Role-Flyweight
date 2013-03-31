@@ -1,0 +1,26 @@
+---
+abstract: "Automatically memoize and reuse your Moose objects\r"
+author:
+  - 'Steven Lee <stevenwh.lee@gmail.com>'
+build_requires:
+  Module::Build: 0.3601
+  Test::Fatal: 0
+  Test::More: 0.68
+configure_requires:
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300031, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: MooseX-Role-Flyweight
+requires:
+  JSON: 2.00
+  Moose: 0
+  MooseX::ClassAttribute: 0.23
+resources:
+  bugtracker: http://github.com/stevenl/MooseX-Role-Flyweight/issues
+  repository: http://github.com/stevenl/MooseX-Roles-Flyweight.git
+version: 0.001
+x_authority: cpan:STEVENL

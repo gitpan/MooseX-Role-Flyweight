@@ -1,0 +1,13 @@
+
+
+This archive contains the distribution MooseX-Role-Flyweight,
+version 0.001:
+
+  Automatically memoize and reuse your Moose objects
+
+This software is copyright (c) 2013 by Steven Lee.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+
