@@ -2,6 +2,9 @@ package MooseX::Role::Flyweight;
 BEGIN {
   $MooseX::Role::Flyweight::AUTHORITY = 'cpan:STEVENL';
 }
+{
+  $MooseX::Role::Flyweight::VERSION = '0.002';
+}
 # ABSTRACT: Automatically memoize and reuse your Moose objects
 
 
@@ -47,7 +50,7 @@ MooseX::Role::Flyweight - Automatically memoize and reuse your Moose objects
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -116,7 +119,7 @@ You may override this method with your own implementation.
 
 =head1 AUTHOR
 
-Steven Lee <stevenwh.lee@gmail.com>
+Steven Lee <stevenl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

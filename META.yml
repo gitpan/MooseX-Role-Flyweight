@@ -1,7 +1,7 @@
 ---
 abstract: "Automatically memoize and reuse your Moose objects\r"
 author:
-  - 'Steven Lee <stevenwh.lee@gmail.com>'
+  - 'Steven Lee <stevenl@cpan.org>'
 build_requires:
   Module::Build: 0.3601
   Test::Fatal: 0
@@ -21,6 +21,6 @@ requires:
   MooseX::ClassAttribute: 0.23
 resources:
   bugtracker: http://github.com/stevenl/MooseX-Role-Flyweight/issues
-  repository: http://github.com/stevenl/MooseX-Roles-Flyweight.git
-version: 0.001
+  repository: http://github.com/stevenl/MooseX-Role-Flyweight.git
+version: 0.002
 x_authority: cpan:STEVENL

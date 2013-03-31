@@ -16,10 +16,10 @@ my %module_build_args = (
   },
   "dist_abstract" => "Automatically memoize and reuse your Moose objects\r",
   "dist_author" => [
-    "Steven Lee <stevenwh.lee\@gmail.com>"
+    "Steven Lee <stevenl\@cpan.org>"
   ],
   "dist_name" => "MooseX-Role-Flyweight",
-  "dist_version" => "0.001",
+  "dist_version" => "0.002",
   "license" => "perl",
   "module_name" => "MooseX::Role::Flyweight",
   "recommends" => {},
