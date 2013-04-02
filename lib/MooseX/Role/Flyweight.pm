@@ -3,7 +3,7 @@ BEGIN {
   $MooseX::Role::Flyweight::AUTHORITY = 'cpan:STEVENL';
 }
 {
-  $MooseX::Role::Flyweight::VERSION = '0.002';
+  $MooseX::Role::Flyweight::VERSION = '0.003';
 }
 # ABSTRACT: Automatically memoize and reuse your Moose objects
 
@@ -14,7 +14,7 @@ use MooseX::ClassAttribute;
 
 my $json;
 
-class_has _instances => (
+class_has '_instances' => (
     is      => 'ro',
     isa     => 'HashRef',
     default => sub { { } },
@@ -50,7 +50,7 @@ MooseX::Role::Flyweight - Automatically memoize and reuse your Moose objects
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 

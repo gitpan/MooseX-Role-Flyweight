@@ -15,12 +15,14 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: MooseX-Role-Flyweight
+recommends:
+  JSON::XS: 0
 requires:
   JSON: 2.00
   Moose: 0
   MooseX::ClassAttribute: 0.23
 resources:
-  bugtracker: http://github.com/stevenl/MooseX-Role-Flyweight/issues
+  bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=MooseX-Role-Flyweight
   repository: http://github.com/stevenl/MooseX-Role-Flyweight.git
-version: 0.002
+version: 0.003
 x_authority: cpan:STEVENL

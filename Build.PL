@@ -19,10 +19,12 @@ my %module_build_args = (
     "Steven Lee <stevenl\@cpan.org>"
   ],
   "dist_name" => "MooseX-Role-Flyweight",
-  "dist_version" => "0.002",
+  "dist_version" => "0.003",
   "license" => "perl",
   "module_name" => "MooseX::Role::Flyweight",
-  "recommends" => {},
+  "recommends" => {
+    "JSON::XS" => 0
+  },
   "recursive_test_files" => 1,
   "requires" => {
     "JSON" => "2.00",
