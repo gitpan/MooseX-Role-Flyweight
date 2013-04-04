@@ -19,7 +19,7 @@ my %module_build_args = (
     "Steven Lee <stevenl\@cpan.org>"
   ],
   "dist_name" => "MooseX-Role-Flyweight",
-  "dist_version" => "0.003",
+  "dist_version" => "0.004",
   "license" => "perl",
   "module_name" => "MooseX::Role::Flyweight",
   "recommends" => {

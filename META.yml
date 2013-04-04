@@ -24,5 +24,5 @@ requires:
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=MooseX-Role-Flyweight
   repository: http://github.com/stevenl/MooseX-Role-Flyweight.git
-version: 0.003
+version: 0.004
 x_authority: cpan:STEVENL
