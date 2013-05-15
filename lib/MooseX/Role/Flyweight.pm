@@ -3,16 +3,18 @@ BEGIN {
   $MooseX::Role::Flyweight::AUTHORITY = 'cpan:STEVENL';
 }
 {
-  $MooseX::Role::Flyweight::VERSION = '0.004';
+  $MooseX::Role::Flyweight::VERSION = '0.005';
 }
-# ABSTRACT: Automatically memoize and reuse your Moose objects
+# ABSTRACT: Automatically memoize your Moose objects for reuse
 
 
-use JSON ();
+use JSON 2.00 (); # works with JSON::XS
 use Moose::Role;
-use MooseX::ClassAttribute;
+use MooseX::ClassAttribute 0.23; # works with roles
+use namespace::autoclean;
+use Scalar::Util ();
 
-my $json;
+my $json = JSON->new->utf8->canonical;
 
 class_has '_instances' => (
     is      => 'ro',
@@ -25,34 +27,43 @@ sub instance {
     my ($class, @args) = @_;
 
     my $key = $class->normalizer(@args);
-    return $class->_instances->{$key} ||= $class->new(@args);
+
+    # return the existing instance
+    return $class->_instances->{$key} if defined $class->_instances->{$key};
+
+    # create a new instance
+    my $instance = $class->new(@args);
+    $class->_instances->{$key} = $instance;
+    Scalar::Util::weaken $class->_instances->{$key};
+
+    return $instance;
 }
 
 
 sub normalizer {
-    my ($class, @args) = @_;
+    my $class = shift;
+    my $args = $class->BUILDARGS(@_);
 
-    $json ||= JSON->new->utf8->canonical;
-
-    my $args = $class->BUILDARGS(@args);
     return $json->encode($args);
 }
 
-no Moose::Role;
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
 
-MooseX::Role::Flyweight - Automatically memoize and reuse your Moose objects
+MooseX::Role::Flyweight - Automatically memoize your Moose objects for reuse
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
+
+Conpose MooseX::Role::Flyweight into your Moose class.
 
     package Glyph::Character;
     use Moose;
@@ -65,7 +76,7 @@ version 0.004
         ...
     }
 
-    package main;
+Get cached object instances by calling C<instance()> instead of C<new()>.
 
     my $unshared_object = Glyph::Character->new(%args);
 
@@ -77,7 +88,8 @@ version 0.004
 
 "A million tiny objects can weigh a ton."
 Instead of creating a multitude of identical copies of objects, a flyweight
-is a memoized instance that may be reused in multiple contexts simultaneously.
+is a memoized instance that may be reused in multiple contexts simultaneously
+to minimize memory usage.
 
 MooseX::Role::Flyweight is a Moose role that enables your Moose class
 to automatically manage a cache of reusable instances.
@@ -121,12 +133,47 @@ new instances when it finds that it cannot reuse an existing one.
 
 =back
 
-=head2 A note on usage
+=head1 METHODS
 
-To use this module, you simply need to compose the role into your Moose class.
-The consuming class may define its own attributes and methods as usual, but ...
+=head2 instance
 
-B<WARNING!> Generally, your flyweight object attributes should be read-only.
+    my $obj = MyClass->instance(%constructor_args);
+
+This class method returns an instance that has been constructed
+from the given arguments.
+The first time it is called with a given set of arguments
+it will construct the object and cache it.
+On subsequent calls with the equivalent set of arguments
+it will reuse the existing object by retrieving it from the cache.
+
+The arguments may be in any form that C<new()> will accept.
+This is normally a hash or hash reference of named parameters.
+Non-hash(ref) arguments are also possible if you have defined your own
+C<BUILDARGS> class method to handle them (see L<Moose::Manual::Construction>).
+
+Note that instances that are constructed by calling C<new()> directly
+do not get cached and therefore will never be returned by this method.
+
+=head2 normalizer
+
+    my $obj_key = MyClass->normalizer(%constructor_args);
+
+This class method generates the keys used by C<instance()> to identify objects
+for storage and retrieval in the cache.
+Generally you should not need to access this method directly unless you
+want to modify the way it generates the cache keys.
+
+It accepts the arguments used for construction and returns a string
+representation of those arguments as the key.
+Equivalent arguments will result in the same string.
+
+It does not handle blessed references as arguments.
+
+=head1 NOTES ON USAGE
+
+=head2 Flyweights should be immutable
+
+Your flyweight object attributes should be read-only.
 It is dangerous to have mutable flyweight objects because it means you may get
 something you don't expect when you retrieve it from the cache the next time.
 
@@ -137,48 +184,65 @@ something you don't expect when you retrieve it from the cache the next time.
     my $flight = Flight->instance(destination => 'Australia');
     die 'hypothermia' if $flight->destination eq 'Antarctica';
 
-TIP: Instances are identified for reuse based on the equivalency of the named
-parameters used for construction after they have passed through C<BUILDARGS>.
-Whether these parameters are actually used for construction is not taken into
-account. For this reason, you may want to use L<MooseX::StrictConstructor>
-in your consuming class to disallow such unused parameters.
+Value objects are the type of objects that are suited as flyweights.
 
-=head1 METHODS
+=head2 Argument normalization
 
-=head2 instance
+Instances are identified for reuse based on the equivalency of the named
+parameters used for construction as interpreted by C<normalizer()>.
 
-    my $obj = MyClass->instance(%constructor_args);
+When determining equivalency it will:
 
-This class method retrieves the object from the cache for reuse,
-or constructs the object and stores it in the cache if it is not there already.
-The given arguments are those that are used by C<new()> to construct the object.
-They are also used to identify the object in the cache.
+=over
 
-The arguments may be in any form that C<new()> will accept.
-This is normally a hash or hash reference of named parameters.
-Non-hash(ref) arguments are also possible if you have defined your own
-C<BUILDARGS> class method to handle them (see L<Moose::Manual::Construction>).
+=item * Apply the class C<BUILDARGS> method on your arguments so that it will
+not distinguish between hash and hashref (and non-hash) arguments.
 
-Note that instances that are constructed by calling C<new()> directly
-do not get cached and will never be returned by this method.
+    # same object returned
+    $obj1 = My::Flyweight->instance( attr => 'value' );
+    $obj2 = My::Flyweight->instance({attr => 'value'});
 
-=head2 normalizer
+=item * Sort the keys in a hash(ref) argument, which means that it will always
+produce the same string for the same named parameters regardless of the order
+they are given.
 
-    my $obj_key = MyClass->normalizer(%constructor_args);
+    # same object returned
+    $obj1 = My::Flyweight->instance( attr1 => 1, attr2 => 2 );
+    $obj2 = My::Flyweight->instance( attr2 => 2, attr1 => 1 );
 
-A class method that accepts the arguments used for construction
-and returns a string representation of those arguments.
-This string representation is used by C<instance()> as the key to identify
-an object for storage and retrieval in the cache.
-The hash keys in a hash(ref) argument will be sorted, which means that it will
-always produce the same string for equivalent named parameters regardless of
-their order.
+=back
 
-You may override this method with your own implementation.
-This can be used to customize the way construction arguments
-are converted to a string to identify an unique instance.
-It is also possible to use this to limit the instances that may be created
-(i.e. to make it a singleton) by limiting its possible return values.
+On the other hand, it will not handle:
+
+=over
+
+=item * Unused construction parameters.
+You can use L<MooseX::StrictConstructor> to prevent this.
+
+    # different objects with same values returned
+    $obj1 = My::Flyweight->instance( attr => 'value' );
+    $obj2 = My::Flyweight->instance( attr => 'value', unused_attr => 'value' );
+
+=item * Default attribute values.
+You can extend/override C<normalizer()> to handle this if you wish.
+
+    # different objects with same values returned
+    $obj1 = My::Flyweight->instance( attr1 => 'value' );
+    $obj2 = My::Flyweight->instance( attr1 => 'value', attr2 => 'default' );
+
+=back
+
+=head2 Garbage collection of cached objects
+
+The cache uses weak references to the objects so that the cache references
+do not prevent the objects from being garbage collected.
+This means that an object in the cache will be destroyed when all other
+references to it go out of scope.
+
+    my $obj = My::Flyweight->instance(%args);
+    # $obj is in the cache
+    undef $obj;
+    # $obj is garbage collected and disappears from the cache
 
 =head1 AUTHOR
 
@@ -192,4 +256,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

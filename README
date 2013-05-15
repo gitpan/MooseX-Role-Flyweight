@@ -1,9 +1,9 @@
 
 
 This archive contains the distribution MooseX-Role-Flyweight,
-version 0.004:
+version 0.005:
 
-  Automatically memoize and reuse your Moose objects
+  Automatically memoize your Moose objects for reuse
 
 This software is copyright (c) 2013 by Steven Lee.
 

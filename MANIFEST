@@ -6,11 +6,11 @@ META.yml
 README
 dist.ini
 lib/MooseX/Role/Flyweight.pm
+t/custom_normalizer.t
 t/flyweight.t
 t/lib/Flyweight/Test1.pm
 t/lib/Flyweight/Test2.pm
 t/lib/Flyweight/Test3.pm
-t/normalizer.t
 t/release-check-manifest.t
 t/release-cpan-changes.t
 t/release-no-tabs.t
