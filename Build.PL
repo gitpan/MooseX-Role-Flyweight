@@ -7,8 +7,6 @@ use Module::Build 0.3601;
 
 my %module_build_args = (
   "build_requires" => {
-    "File::Basename" => 0,
-    "File::Spec::Functions" => 0,
     "Module::Build" => "0.3601",
     "Moose" => 0,
     "Test::Fatal" => 0,
@@ -24,7 +22,7 @@ my %module_build_args = (
     "Steven Lee <stevenl\@cpan.org>"
   ],
   "dist_name" => "MooseX-Role-Flyweight",
-  "dist_version" => "0.005",
+  "dist_version" => "0.006",
   "license" => "perl",
   "module_name" => "MooseX::Role::Flyweight",
   "recommends" => {

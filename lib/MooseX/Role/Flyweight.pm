@@ -3,7 +3,7 @@ BEGIN {
   $MooseX::Role::Flyweight::AUTHORITY = 'cpan:STEVENL';
 }
 {
-  $MooseX::Role::Flyweight::VERSION = '0.005';
+  $MooseX::Role::Flyweight::VERSION = '0.006';
 }
 # ABSTRACT: Automatically memoize your Moose objects for reuse
 
@@ -59,7 +59,7 @@ MooseX::Role::Flyweight - Automatically memoize your Moose objects for reuse
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
