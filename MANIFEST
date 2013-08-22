@@ -1,8 +1,9 @@
-Build.PL
 Changes
 LICENSE
 MANIFEST
+META.json
 META.yml
+Makefile.PL
 README
 dist.ini
 lib/MooseX/Role/Flyweight.pm
@@ -11,10 +12,7 @@ t/flyweight.t
 t/lib/Flyweight/Test1.pm
 t/lib/Flyweight/Test2.pm
 t/lib/Flyweight/Test3.pm
-t/release-check-manifest.t
-t/release-cpan-changes.t
 t/release-no-tabs.t
 t/release-pod-coverage.t
-t/release-pod-linkcheck.t
 t/release-pod-syntax.t
 weaver.ini

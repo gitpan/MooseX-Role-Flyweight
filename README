@@ -1,7 +1,7 @@
 
 
 This archive contains the distribution MooseX-Role-Flyweight,
-version 0.006:
+version 0.007:
 
   Automatically memoize your Moose objects for reuse
 
