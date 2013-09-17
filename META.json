@@ -4,7 +4,7 @@
       "Steven Lee <stevenwh.lee@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140",
+   "generated_by" : "Dist::Zilla version 4.300036, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -53,7 +53,7 @@
    "provides" : {
       "MooseX::Role::Flyweight" : {
          "file" : "lib/MooseX/Role/Flyweight.pm",
-         "version" : "0.007"
+         "version" : "1.00"
       }
    },
    "release_status" : "stable",
@@ -68,6 +68,6 @@
          "web" : "http://github.com/stevenl/MooseX-Role-Flyweight"
       }
    },
-   "version" : "0.007"
+   "version" : "1.00"
 }
 
