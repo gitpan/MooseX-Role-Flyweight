@@ -22,7 +22,7 @@ my %WriteMakefileArgs = (
   "PREREQ_PM" => {
     "JSON" => "2.00",
     "Moose::Role" => 0,
-    "MooseX::ClassAttribute" => "0.23",
+    "MooseX::ClassAttribute" => "0.27",
     "Scalar::Util" => 0,
     "namespace::autoclean" => 0
   },
@@ -34,7 +34,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "1.00",
+  "VERSION" => "1.01",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -1,6 +1,6 @@
 package MooseX::Role::Flyweight;
 {
-  $MooseX::Role::Flyweight::VERSION = '1.00';
+  $MooseX::Role::Flyweight::VERSION = '1.01';
 }
 # ABSTRACT: Automatically memoize your Moose objects for reuse
 
@@ -8,7 +8,7 @@ package MooseX::Role::Flyweight;
 use 5.006;
 use JSON 2.00 (); # works with JSON::XS
 use Moose::Role;
-use MooseX::ClassAttribute 0.23; # works with roles
+use MooseX::ClassAttribute 0.27;
 use namespace::autoclean;
 use Scalar::Util ();
 
@@ -57,7 +57,7 @@ MooseX::Role::Flyweight - Automatically memoize your Moose objects for reuse
 
 =head1 VERSION
 
-version 1.00
+version 1.01
 
 =head1 SYNOPSIS
 
