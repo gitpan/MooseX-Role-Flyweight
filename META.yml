@@ -21,7 +21,7 @@ name: MooseX-Role-Flyweight
 provides:
   MooseX::Role::Flyweight:
     file: lib/MooseX/Role/Flyweight.pm
-    version: 1.01
+    version: 1.02
 recommends:
   JSON::XS: 0
 requires:
@@ -35,7 +35,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=MooseX-Role-Flyweight
   homepage: https://github.com/stevenl/MooseX-Role-Flyweight
   repository: https://github.com/stevenl/MooseX-Role-Flyweight.git
-version: 1.01
+version: 1.02
 x_Dist_Zilla:
   perl:
     version: 5.018000

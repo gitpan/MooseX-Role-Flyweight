@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More tests => 16;
 use Test::Fatal;
 
 use lib 't/lib';
@@ -52,7 +52,7 @@ isnt(
 );
 
 like(
-    exception {Flyweight::Test1->instance(id => 'abc')},
+    exception { Flyweight::Test1->instance(id => 'abc') },
     qr/\(id\) does not pass the type constraint/,
     'does not interfere with construction exceptions'
 );
@@ -75,12 +75,26 @@ isnt(
 );
 
 subtest 'cached references are weak' => sub {
-    my %args = (id => 123);
-    my $key  = Flyweight::Test1->normalizer(%args);
+    my $args = { id => 123 };
+    my $key  = Flyweight::Test1->normalizer($args);
 
-    my $obj = Flyweight::Test1->instance(%args);
+    my $obj = Flyweight::Test1->instance($args);
     ok defined Flyweight::Test1->_instances->{$key}, 'cached ref exists';
 
     undef $obj;
     ok ! defined Flyweight::Test1->_instances->{$key}, 'cached ref discarded';
+};
+
+subtest 'backwards compatibility' => sub {
+    is(
+        Flyweight::Test1->normalizer(id => 123),
+        Flyweight::Test1->normalizer({id => 123}),
+        'normalizer() accepts hashes'
+    );
+
+    is(
+        Flyweight::Test1->normalizer(123),
+        Flyweight::Test1->normalizer({id => 123}),
+        'normalizer() accepts a scalar'
+    );
 };

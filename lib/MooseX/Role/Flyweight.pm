@@ -1,6 +1,6 @@
 package MooseX::Role::Flyweight;
 {
-  $MooseX::Role::Flyweight::VERSION = '1.01';
+  $MooseX::Role::Flyweight::VERSION = '1.02';
 }
 # ABSTRACT: Automatically memoize your Moose objects for reuse
 
@@ -23,8 +23,8 @@ class_has '_instances' => (
 
 sub instance {
     my ($class, @args) = @_;
-
-    my $key = $class->normalizer(@args);
+    my $args = $class->BUILDARGS(@args);
+    my $key  = $class->normalizer($args);
 
     # return the existing instance
     return $class->_instances->{$key} if defined $class->_instances->{$key};
@@ -40,7 +40,9 @@ sub instance {
 
 sub normalizer {
     my $class = shift;
-    my $args = $class->BUILDARGS(@_);
+    my $args = ( @_ > 1 || ref($_[0]) ne 'HASH' )
+        ? $class->BUILDARGS(@_)
+        : $_[0];
 
     return $json->encode($args);
 }
@@ -57,7 +59,7 @@ MooseX::Role::Flyweight - Automatically memoize your Moose objects for reuse
 
 =head1 VERSION
 
-version 1.01
+version 1.02
 
 =head1 SYNOPSIS
 
@@ -74,13 +76,23 @@ Compose MooseX::Role::Flyweight into your Moose class.
         ...
     }
 
+    # Optional: override normalizer()
+    sub normalizer {
+        my ($class, $init_args) = @_;
+        return $init_args->{c};
+    }
+
 Get cached object instances by calling C<instance()> instead of C<new()>.
 
-    my $shared_object = Glyph::Character->instance(%args);
-    my $same_object   = Glyph::Character->instance(%args);
-    my $diff_object   = Glyph::Character->instance(%diff_args);
+    # the same initialisation arguments produces the same object
+    $shared_object   = Glyph::Character->instance( %init_args );
+    $same_object     = Glyph::Character->instance( %init_args );
 
-    my $unshared_object = Glyph::Character->new(%args);
+    # different initialisation arguments produces a different object
+    $another_object  = Glyph::Character->instance( %diff_args );
+
+    # new() still works but its objects are not shared
+    $unshared_object = Glyph::Character->new( %init_args );
 
 =head1 DESCRIPTION
 
@@ -129,7 +141,7 @@ that it cannot reuse an existing one.
 
 =head2 instance
 
-    my $obj = MyClass->instance(%constructor_args);
+    $instance = My::Flyweight->instance( %init_args );
 
 This class method returns an instance that has been constructed from the given
 arguments. The first time it is called with a given set of arguments it will
@@ -146,18 +158,20 @@ get cached and therefore will never be returned by this method.
 
 =head2 normalizer
 
-    my $obj_key = MyClass->normalizer(%constructor_args);
+    $instance_identifier_string = My::Flyweight->normalizer( $init_args_hashref );
 
 This class method generates the keys used by C<instance()> to identify objects
-for storage and retrieval in the cache. Generally you should not need to
-access this method directly unless you want to modify the way it generates the
-cache keys.
+for storage and retrieval in the cache. It is passed the arguments used for
+construction as a hashref (after they have passed through C<BUILDARGS>). It
+returns a string representation of those arguments as the key. Equivalent
+arguments should result in the same string.
 
-It accepts the arguments used for construction and returns a string
-representation of those arguments as the key. Equivalent arguments will result
-in the same string.
+Note that this does not handle blessed references as arguments.
 
-It does not handle blessed references as arguments.
+Generally you should not need to access this method directly. The only reason
+you would want to know about this method is if you want to change the way it
+generates the cache keys, in which case you should wrap or override this
+method in your class that consumes this role.
 
 =head1 NOTES ON USAGE
 
@@ -167,12 +181,12 @@ Your flyweight object attributes should be read-only. It is dangerous to have
 mutable flyweight objects because it means you may get something you don't
 expect when you retrieve it from the cache the next time.
 
-    my $flight = Flight->instance(destination => 'Australia');
+    my $flight = Flight->instance( destination => 'Australia' );
     $flight->set_destination('Antarctica');
 
     # ... later, in another context
-    my $flight = Flight->instance(destination => 'Australia');
-    die 'hypothermia' if $flight->destination eq 'Antarctica';
+    my $flight = Flight->instance( destination => 'Australia' );
+    die 'hypothermia'  if $flight->destination eq 'Antarctica';
 
 Value objects are the type of objects that are suited as flyweights.
 
@@ -251,7 +265,8 @@ Steven Lee <stevenwh.lee@gmail.com>
 
 =head1 ACKNOWLEDGEMENTS
 
-Mark Stosberg (MARKSTOS) for suggesting to explain the difference to Singleton.
+Thanks to Mark Stosberg (MARKSTOS) for suggesting to explain the difference
+between MooseX::Role::Flyweight and MooseX::Singleton.
 
 =head1 SEE ALSO
 

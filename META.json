@@ -55,7 +55,7 @@
    "provides" : {
       "MooseX::Role::Flyweight" : {
          "file" : "lib/MooseX/Role/Flyweight.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       }
    },
    "release_status" : "stable",
@@ -71,7 +71,7 @@
          "web" : "https://github.com/stevenl/MooseX-Role-Flyweight"
       }
    },
-   "version" : "1.01",
+   "version" : "1.02",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.018000"
