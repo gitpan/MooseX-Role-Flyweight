@@ -12,7 +12,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300038, CPAN::Meta::Converter version 2.132140'
+generated_by: 'Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -21,13 +21,12 @@ name: MooseX-Role-Flyweight
 provides:
   MooseX::Role::Flyweight:
     file: lib/MooseX/Role/Flyweight.pm
-    version: 1.02
+    version: 1.03
 recommends:
   JSON::XS: 0
 requires:
   JSON: 2.00
   Moose::Role: 0
-  MooseX::ClassAttribute: 0.27
   Scalar::Util: 0
   namespace::autoclean: 0
   perl: 5.006
@@ -35,7 +34,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=MooseX-Role-Flyweight
   homepage: https://github.com/stevenl/MooseX-Role-Flyweight
   repository: https://github.com/stevenl/MooseX-Role-Flyweight.git
-version: 1.02
+version: 1.03
 x_Dist_Zilla:
   perl:
     version: 5.018000
@@ -43,63 +42,63 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GatherDir
       name: '@Basic/GatherDir'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Basic/PruneCruft'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::ManifestSkip
       name: '@Basic/ManifestSkip'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@Basic/MetaYAML'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::License
       name: '@Basic/License'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::Readme
       name: '@Basic/Readme'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::ExtraTests
       name: '@Basic/ExtraTests'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Basic/ExecDir'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::ShareDir
       name: '@Basic/ShareDir'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::MakeMaker
       name: '@Basic/MakeMaker'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::Manifest
       name: '@Basic/Manifest'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@Basic/TestRelease'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Basic/ConfirmRelease'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
       name: '@Basic/UploadToCPAN'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::PruneFiles
       name: PruneFiles
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::PodWeaver
       name: PodWeaver
@@ -107,11 +106,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PkgVersion
       name: PkgVersion
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: AutoPrereqs
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
@@ -119,19 +118,19 @@ x_Dist_Zilla:
           phase: runtime
           type: recommends
       name: Recommends
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: MetaConfig
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::MetaJSON
       name: MetaJSON
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::CPANFile
       name: CPANFile
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: GithubMeta
@@ -147,11 +146,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: PodCoverageTests
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::PodSyntaxTests
       name: PodSyntaxTests
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -162,6 +161,14 @@ x_Dist_Zilla:
             - ':ExecFiles'
       name: Test::NoTabs
       version: 0.02
+    -
+      class: Dist::Zilla::Plugin::PerlTidy
+      name: PerlTidy
+      version: 0.13
+    -
+      class: Dist::Zilla::Plugin::Test::Perl::Critic
+      name: Test::Perl::Critic
+      version: 2.112410
     -
       class: Dist::Zilla::Plugin::MarkdownInRoot::WithMetaLinks
       name: MarkdownInRoot::WithMetaLinks
@@ -189,29 +196,37 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':IncModules'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':TestFiles'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ExecFiles'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':ShareFiles'
-      version: 4.300038
+      version: 5.013
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':MainModule'
-      version: 4.300038
+      version: 5.013
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':AllFiles'
+      version: 5.013
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':NoFiles'
+      version: 5.013
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
       is_trial: 0
-    version: 4.300038
+    version: 5.013

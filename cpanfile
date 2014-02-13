@@ -1,6 +1,5 @@
 requires "JSON" => "2.00";
 requires "Moose::Role" => "0";
-requires "MooseX::ClassAttribute" => "0.27";
 requires "Scalar::Util" => "0";
 requires "namespace::autoclean" => "0";
 requires "perl" => "5.006";

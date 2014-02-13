@@ -1,50 +1,42 @@
 package MooseX::Role::Flyweight;
-{
-  $MooseX::Role::Flyweight::VERSION = '1.02';
-}
 # ABSTRACT: Automatically memoize your Moose objects for reuse
-
+$MooseX::Role::Flyweight::VERSION = '1.03';
 
 use 5.006;
-use JSON 2.00 (); # works with JSON::XS
+use JSON 2.00 ();  # works with JSON::XS
 use Moose::Role;
-use MooseX::ClassAttribute 0.27;
 use namespace::autoclean;
 use Scalar::Util ();
 
-my $json = JSON->new->utf8->canonical;
+my $JSON = JSON->new->utf8->canonical;
 
-class_has '_instances' => (
-    is      => 'ro',
-    isa     => 'HashRef',
-    default => sub { { } },
-);
-
+our %INSTANCES;
 
 sub instance {
-    my ($class, @args) = @_;
+    my ( $class, @args ) = @_;
     my $args = $class->BUILDARGS(@args);
     my $key  = $class->normalizer($args);
 
     # return the existing instance
-    return $class->_instances->{$key} if defined $class->_instances->{$key};
+    return $INSTANCES{$class}{$key}
+        if defined $INSTANCES{$class}{$key};
 
     # create a new instance
     my $instance = $class->new(@args);
-    $class->_instances->{$key} = $instance;
-    Scalar::Util::weaken $class->_instances->{$key};
+    $INSTANCES{$class}{$key} = $instance;
+    Scalar::Util::weaken $INSTANCES{$class}{$key};
 
     return $instance;
 }
 
-
 sub normalizer {
-    my $class = shift;
-    my $args = ( @_ > 1 || ref($_[0]) ne 'HASH' )
-        ? $class->BUILDARGS(@_)
-        : $_[0];
+    my ( $class, @args ) = @_;
+    my $args =
+        ( @args > 1 || ref( $args[0] ) ne 'HASH' )
+        ? $class->BUILDARGS(@args)
+        : $args[0];
 
-    return $json->encode($args);
+    return $JSON->encode($args);
 }
 
 1;
@@ -59,7 +51,7 @@ MooseX::Role::Flyweight - Automatically memoize your Moose objects for reuse
 
 =head1 VERSION
 
-version 1.02
+version 1.03
 
 =head1 SYNOPSIS
 
@@ -96,11 +88,12 @@ Get cached object instances by calling C<instance()> instead of C<new()>.
 
 =head1 DESCRIPTION
 
-"A million tiny objects can weigh a ton." Instead of creating a multitude of
-identical copies of objects, a flyweight is a memoized instance that may be
-reused in multiple contexts simultaneously to minimize memory usage. And due
-to the cost of constructing objects the reuse of flyweights has the potential
-to speed up your code.
+I<A million tiny objects can weigh a ton.>
+
+Instead of creating a multitude of identical copies of objects, a flyweight
+is a memoized instance that may be reused in multiple contexts simultaneously
+to minimize memory usage. And due to the cost of constructing objects the
+reuse of flyweights has the potential to speed up your code.
 
 MooseX::Role::Flyweight is a Moose role that enables your Moose class to
 automatically manage a cache of reusable instances. In other words, the class
@@ -276,7 +269,7 @@ L<Memoize>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Steven Lee.
+This software is copyright (c) 2014 by Steven Lee.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
